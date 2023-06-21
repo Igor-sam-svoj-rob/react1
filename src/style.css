@@ -1,0 +1,32 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+  font-size: 3rem;
+  background-color: beige;
+}
+
+.card {
+  display: flex;
+  background-color: beige;
+  border-radius: 10px;
+}
+
+.rating {
+  background-color: crimson;
+  color: #fff;
+  width: 3rem;
+  height: 3rem;
+  line-height: 3rem;
+  text-align: center;
+  border-radius: 100%;
+  position: relative;
+  top: 1rem;
+  left: 1rem;
+}

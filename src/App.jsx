@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Components/Header";
-import Kartica from "./Components/Kartica";
+import karticaData from "./Data/KarticaData";
+import ListaKartica from "./Components/ListaKartica";
 
 function App() {
+  const [kartica, setKartica] = useState(karticaData);
+  const deleteKartice = (id) => {
+    console.log("Dolazim iz App.jsx-a", id);
+  };
+
   return (
     <>
       <Header text="Novi Logo" />
-      <Kartica />
+      <ListaKartica kartica={kartica} handleDelete={deleteKartice} />
     </>
   );
 }

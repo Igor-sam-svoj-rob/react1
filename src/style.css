@@ -12,10 +12,41 @@ header {
   background-color: beige;
 }
 
+.lista-kartica {
+  width: 80%;
+  margin: 5rem auto;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5rem;
+}
+
+.text-display {
+  padding: 1rem;
+}
+
 .card {
   display: flex;
-  background-color: beige;
+  background-color: cornflowerblue;
+  color: #fff;
   border-radius: 10px;
+}
+
+.card.flip {
+  background-color: beige;
+  color: #000;
+}
+
+.close {
+  background-color: crimson;
+  color: #fff;
+  padding: 5px;
+  position: relative;
+  bottom: 2rem;
+  height: 2.3rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .rating {

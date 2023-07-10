@@ -156,7 +156,23 @@ input[type="radio"]::before {
   box-shadow: inset 1rem 1rem #fff;
 }
 
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
 input[type="radio"]:focus {
   outline: max(2px, 0.15rem) solid #000;
   outline-offset: max(2px, 0.15rem);
+}
+
+.linkic {
+  position: relative;
+  left: 85%;
+  font-size: 2rem;
+  color: crimson;
+}
+
+.stranica {
+  display: flex;
+  flex-direction: column;
 }

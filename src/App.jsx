@@ -1,27 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
+import { FeedbackProvider } from "./Context/Context";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Header from "./Components/Header";
-import karticaData from "./Data/KarticaData";
 import ListaKartica from "./Components/ListaKartica";
 import Stats from "./Components/Shared/Stats";
 import KarticaForma from "./Components/KarticaForma";
+import Stranica from "./Stranice/Stranica";
+import { FaArrowAltCircleRight } from "react-icons/fa";
 
 function App() {
-  const [kartica, setKartica] = useState(karticaData);
-
-  const handleFeedback = (unos) => {
-    console.log(unos);
-  };
-  const deleteKartice = (id) => {
-    setKartica(kartica.filter((item) => item.id != id));
-  };
-
   return (
-    <>
-      <Header text="Novi Logo" />
-      <KarticaForma handleFeedback={handleFeedback} />
-      <Stats kartica={kartica} />
-      <ListaKartica kartica={kartica} handleDelete={deleteKartice} />
-    </>
+    <FeedbackProvider>
+      <Router>
+        <Header text="Novi Logo" />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <KarticaForma />
+                <Stats />
+                <ListaKartica />
+              </>
+            }
+          ></Route>
+          <Route path="/stranica" element={<Stranica />} />
+        </Routes>
+        <Link to="/stranica">
+          <FaArrowAltCircleRight className="linkic" />
+        </Link>
+      </Router>
+    </FeedbackProvider>
   );
 }
 

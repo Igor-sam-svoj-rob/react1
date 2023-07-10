@@ -1,79 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import Context from "../Context/Context";
 
 function Rating({ odabran }) {
   const [odabrano, setOdabrano] = useState(1);
+  const { editKartica } = useContext(Context);
+
   const handleChange = (event) => {
     setOdabrano(+event.currentTarget.value);
     odabran(+event.currentTarget.value);
   };
 
+  useEffect(() => {
+    setOdabrano(editKartica.kartica.rating);
+  }, [editKartica]);
+
+  const ratings = [1, 2, 3, 4, 5];
+
   return (
     <ul className="ocjena">
-      <li>
-        <label htmlFor="broj1" className="form-control">
-          <input
-            type="radio"
-            id="broj1"
-            name="rating"
-            value="1"
-            onChange={handleChange}
-            checked={odabrano === 1}
-          />
-          1
-        </label>
-      </li>
-      <li>
-        <label htmlFor="broj2" className="form-control">
-          <input
-            type="radio"
-            id="broj2"
-            name="rating"
-            value="2"
-            onChange={handleChange}
-            checked={odabrano === 2}
-          />
-          2
-        </label>
-      </li>
-      <li>
-        <label htmlFor="broj3" className="form-control">
-          <input
-            type="radio"
-            id="broj3"
-            name="rating"
-            value="3"
-            onChange={handleChange}
-            checked={odabrano === 3}
-          />
-          3
-        </label>
-      </li>
-      <li>
-        <label htmlFor="broj4" className="form-control">
-          <input
-            type="radio"
-            id="broj4"
-            name="rating"
-            value="4"
-            onChange={handleChange}
-            checked={odabrano === 4}
-          />
-          4
-        </label>
-      </li>
-      <li>
-        <label htmlFor="broj5" className="form-control">
-          <input
-            type="radio"
-            id="broj5"
-            name="rating"
-            value="5"
-            onChange={handleChange}
-            checked={odabrano === 5}
-          />
-          5
-        </label>
-      </li>
+      {ratings.map((rating) => (
+        <li key={rating}>
+          <label htmlFor={`broj${rating}`} className="form-control">
+            <input
+              type="radio"
+              id={`broj${rating}`}
+              name="rating"
+              value={rating}
+              onChange={handleChange}
+              checked={odabrano === rating}
+            />
+          </label>
+          {rating}
+        </li>
+      ))}
     </ul>
   );
 }

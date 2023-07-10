@@ -1,23 +1,31 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import Context from "../Context/Context";
 import Card from "./Shared/Card";
 import Button from "./Shared/Button";
 import Rating from "./Rating";
 
-function KarticaForma({ handleFeedback }) {
+function KarticaForma() {
   const [text, setText] = useState("");
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [poruka, setPoruka] = useState("");
   const [rating, setRating] = useState(5);
+  const { handleFeedback, editKartica, updateFeedback } = useContext(Context);
+
+  useEffect(() => {
+    if (editKartica.edit === true) {
+      setBtnDisabled(false);
+      setText(editKartica.kartica.text);
+      setRating(editKartica.kartica.rating);
+    }
+  }, [editKartica]);
 
   const handleTextChange = (event) => {
-    setText(event.target.value);
-    if (event.target.value === "") {
+    const provjera = event.target.value;
+    setText(provjera);
+    if (provjera === "") {
       setBtnDisabled(true);
       setPoruka(null);
-    } else if (
-      event.target.value !== "" &&
-      event.target.value.trim().length < 6
-    ) {
+    } else if (provjera !== "" && provjera.trim().length < 6) {
       setPoruka("Mora biti barem 6 slova");
       setBtnDisabled(true);
     } else {
@@ -32,7 +40,12 @@ function KarticaForma({ handleFeedback }) {
       text,
       rating,
     };
-    handleFeedback(noviUnos);
+    if (editKartica.edit === true) {
+      updateFeedback(editKartica.kartica.id, noviUnos);
+    } else {
+      handleFeedback(noviUnos);
+    }
+
     setText("");
   };
 

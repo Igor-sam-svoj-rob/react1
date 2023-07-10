@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import Context from "../../Context/Context";
 
-function Stats({ kartica }) {
+function Stats() {
+  const { kartica } = useContext(Context);
+
   let prosjek =
     kartica.reduce((suma, trenutnaVrijednost) => {
       return suma + trenutnaVrijednost.rating;

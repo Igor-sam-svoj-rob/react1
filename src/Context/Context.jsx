@@ -1,49 +1,44 @@
-import React, { createContext, useState } from "react";
-import { v4 as uuid4 } from "uuid";
+import React, { createContext, useEffect, useState } from "react";
 
 const Context = createContext();
 
 export const FeedbackProvider = ({ children }) => {
-  const [kartica, setKartica] = useState([
-    {
-      id: 1,
-      rating: 5,
-      text: "lorem ipsum dolor",
-    },
-    {
-      id: 2,
-      rating: 4,
-      text: "lorem ipsum dolor",
-    },
-    {
-      id: 3,
-      rating: 2,
-      text: "lorem ipsum dolor",
-    },
-    {
-      id: 4,
-      rating: 3,
-      text: "lorem ipsum dolor",
-    },
-    {
-      id: 5,
-      rating: 1,
-      text: "lorem ipsum dolor",
-    },
-    {
-      id: 6,
-      rating: 5,
-      text: "lorem ipsum dolor",
-    },
-  ]);
+  const [loading, setLoading] = useState(true);
+  const [kartica, setKartica] = useState([]);
 
-  const deleteKartice = (id) => {
+  useEffect(() => {
+    fetch("/kartice?_sort=id&_order=desc")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Niste dohvatili podatke");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setKartica(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Greška:", error);
+      });
+  }, []);
+
+  const deleteKartice = async (id) => {
+    await fetch(`/kartice/${id}`, { method: "DELETE" });
     setKartica(kartica.filter((item) => item.id !== id));
   };
 
-  const handleFeedback = (unos) => {
-    unos.id = uuid4();
-    setKartica([unos, ...kartica]);
+  const handleFeedback = async (unos) => {
+    const response = await fetch("/kartice", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(unos),
+    });
+
+    const data = await response.json();
+    setKartica([data, ...kartica]);
   };
 
   const [editKartica, setEditKartica] = useState({
@@ -58,11 +53,18 @@ export const FeedbackProvider = ({ children }) => {
     });
   };
 
-  const updateFeedback = (id, updateKartice) => {
+  const updateFeedback = async (id, updateKartice) => {
+    const response = await fetch(`/kartice/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateKartice),
+    });
+
+    const data = await response.json();
     setKartica(
-      kartica.map((karta) =>
-        karta.id === id ? { ...karta, ...updateKartice } : karta
-      )
+      kartica.map((karta) => (karta.id === id ? { ...karta, ...data } : karta))
     );
   };
 
@@ -75,6 +77,7 @@ export const FeedbackProvider = ({ children }) => {
         editFeedback,
         editKartica,
         updateFeedback,
+        loading,
       }}
     >
       {children}

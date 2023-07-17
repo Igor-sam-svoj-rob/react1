@@ -2,14 +2,17 @@ import React, { useContext } from "react";
 import Context from "../Context/Context";
 import { motion, AnimatePresence } from "framer-motion";
 import StiliziraneKartice from "./StiliziraneKartice";
+import Spinner from "../Components/Shared/Spinner";
 
 function ListaKartica() {
-  const { kartica } = useContext(Context);
+  const { kartica, loading } = useContext(Context);
 
-  if (!kartica || kartica.length === 0) {
+  if (!loading && (!kartica || kartica.length === 0)) {
     return <p>Nema sadržaja</p>;
   }
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <div className="lista-kartica">
       <AnimatePresence>
         {kartica.map((item) => (
